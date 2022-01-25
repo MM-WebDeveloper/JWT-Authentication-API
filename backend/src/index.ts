@@ -5,12 +5,13 @@ import { ApolloServer } from 'apollo-server-express';
 import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core';
 import { createConnection } from 'typeorm';
 import express from 'express';
+import { RegisterResolver } from './resolvers/RegisterResolver';
 
 const run = async () => {
 	const PORT = process.env.PORT || 4000;
 
 	const { typeDefs, resolvers } = await buildTypeDefsAndResolvers({
-		resolvers: [HelloResolver],
+		resolvers: [HelloResolver, RegisterResolver],
 	});
 
 	const app = express();
