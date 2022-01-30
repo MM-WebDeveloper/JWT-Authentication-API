@@ -12,6 +12,7 @@
 	"license": "ISC",
 	"devDependencies": {
 		"@types/bcryptjs": "^2.4.2",
+		"@types/jsonwebtoken": "^8.5.8",
 		"nodemon": "^2.0.15",
 		"ts-node": "^10.4.0",
 		"type-graphql": "^1.1.1",
@@ -21,7 +22,9 @@
 		"apollo-server-core": "^3.6.1",
 		"apollo-server-express": "^3.6.1",
 		"bcryptjs": "^2.4.3",
+		"dotenv": "^14.3.2",
 		"graphql": "^15.8.0",
+		"jsonwebtoken": "^8.5.1",
 		"pg": "^8.7.1",
 		"reflect-metadata": "^0.1.13",
 		"typeorm": "^0.2.41"

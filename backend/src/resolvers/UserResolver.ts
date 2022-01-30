@@ -1,6 +1,5 @@
-import { Arg, Query, Resolver } from 'type-graphql';
+import { Query, Resolver } from 'type-graphql';
 import { User } from '../entities/User';
-import bcrypt from 'bcryptjs';
 
 @Resolver()
 export class UserResolver {

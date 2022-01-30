@@ -7,12 +7,13 @@ import { createConnection } from 'typeorm';
 import express from 'express';
 import { RegisterResolver } from './resolvers/RegisterResolver';
 import { UserResolver } from './resolvers/UserResolver';
+import { LoginResolver } from './resolvers/LoginResolver';
 
 const run = async () => {
 	const PORT = process.env.PORT || 4000;
 
 	const { typeDefs, resolvers } = await buildTypeDefsAndResolvers({
-		resolvers: [HelloResolver, RegisterResolver, UserResolver],
+		resolvers: [HelloResolver, RegisterResolver, LoginResolver, UserResolver],
 	});
 
 	const app = express();
@@ -21,6 +22,10 @@ const run = async () => {
 		typeDefs,
 		resolvers,
 		plugins: [ApolloServerPluginLandingPageGraphQLPlayground],
+		context: ({ req, res }) => ({
+			req,
+			res,
+		}),
 	});
 
 	await createConnection().then(() => console.log('Connected to database...'));
