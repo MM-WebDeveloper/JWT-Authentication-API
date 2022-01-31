@@ -1,24 +1,24 @@
 import { Arg, Ctx, Field, Mutation, ObjectType, Resolver } from 'type-graphql';
 import { User } from '../entities/User';
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
 import 'dotenv/config';
 import { ContextType } from '../types/ContextType';
+import { createAccessToken, createRefreshToken } from '../helpers/auth';
 
 @ObjectType()
-class LoginResposne {
+class LoginResponse {
 	@Field()
 	accessToken: string;
 }
 
 @Resolver()
 export class LoginResolver {
-	@Mutation(() => LoginResposne)
+	@Mutation(() => LoginResponse)
 	async login(
 		@Arg('email') email: string,
 		@Arg('password') password: string,
 		@Ctx() ctx: ContextType
-	): Promise<LoginResposne> {
+	): Promise<LoginResponse> {
 		try {
 			const user = await User.findOne({ where: { email } });
 
@@ -32,24 +32,12 @@ export class LoginResolver {
 				throw new Error('invalid login credentials');
 			}
 
-			ctx.res.cookie(
-				'jid',
-				jwt.sign({ userId: user.id }, process.env.REFRESH_TOKEN_SECRET, {
-					expiresIn: '7d',
-				}),
-				{
-					httpOnly: true,
-				}
-			);
+			ctx.res.cookie('jid', createRefreshToken(user), {
+				httpOnly: true,
+			});
 
 			return {
-				accessToken: jwt.sign(
-					{ userId: user.id },
-					process.env.ACCESS_TOKEN_SECRET,
-					{
-						expiresIn: '365d',
-					}
-				),
+				accessToken: createAccessToken(user),
 			};
 		} catch (error) {
 			throw new Error(error.message);
