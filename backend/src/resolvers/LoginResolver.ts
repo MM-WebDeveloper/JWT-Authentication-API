@@ -3,7 +3,7 @@ import { User } from '../entities/User';
 import bcrypt from 'bcryptjs';
 import 'dotenv/config';
 import { ContextType } from '../types/ContextType';
-import { createAccessToken, createRefreshToken } from '../helpers/auth';
+import { createAccessToken, createRefreshToken } from '../helpers/Auth';
 
 @ObjectType()
 class LoginResponse {
