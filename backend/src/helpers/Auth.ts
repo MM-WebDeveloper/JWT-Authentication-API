@@ -5,7 +5,7 @@ import { ContextType } from '../types/ContextType';
 
 export const createAccessToken = (user: User) => {
 	return jwt.sign({ userId: user.id }, process.env.ACCESS_TOKEN_SECRET, {
-		expiresIn: '1d',
+		expiresIn: '15m',
 	});
 };
 

@@ -8,6 +8,10 @@ import express from 'express';
 import { RegisterResolver } from './resolvers/RegisterResolver';
 import { UserResolver } from './resolvers/UserResolver';
 import { LoginResolver } from './resolvers/LoginResolver';
+import cookieParser from 'cookie-parser';
+import jwt from 'jsonwebtoken';
+import { User } from './entities/User';
+import { createAccessToken } from './helpers/Auth';
 
 const run = async () => {
 	const PORT = process.env.PORT || 4000;
@@ -17,6 +21,29 @@ const run = async () => {
 	});
 
 	const app = express();
+	app.use(cookieParser());
+
+	app.post('/refresh_token', async (req, res) => {
+		const token = req.cookies.jid;
+
+		if (!token) {
+			return res.send({ ok: false, accessToken: '' });
+		}
+
+		let payload: any = null;
+		try {
+			payload = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET);
+			const user = await User.findOne({ id: payload.userId });
+			if (!user) {
+				return res.send({ ok: false, accessToken: '' });
+			}
+
+			return res.send({ ok: true, accessToken: createAccessToken(user) });
+		} catch (error) {
+			console.log(error);
+			return res.send({ ok: false, accessToken: '' });
+		}
+	});
 
 	const apolloServer = new ApolloServer({
 		typeDefs,
