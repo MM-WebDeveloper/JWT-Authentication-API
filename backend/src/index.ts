@@ -11,7 +11,7 @@ import { LoginResolver } from './resolvers/LoginResolver';
 import cookieParser from 'cookie-parser';
 import jwt from 'jsonwebtoken';
 import { User } from './entities/User';
-import { createAccessToken } from './helpers/Auth';
+import { createAccessToken, createRefreshToken } from './helpers/Auth';
 
 const run = async () => {
 	const PORT = process.env.PORT || 4000;
@@ -31,12 +31,19 @@ const run = async () => {
 		}
 
 		let payload: any = null;
+
 		try {
 			payload = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET);
+
 			const user = await User.findOne({ id: payload.userId });
+
 			if (!user) {
 				return res.send({ ok: false, accessToken: '' });
 			}
+
+			res.cookie('jid', createRefreshToken(user), {
+				httpOnly: true,
+			});
 
 			return res.send({ ok: true, accessToken: createAccessToken(user) });
 		} catch (error) {
