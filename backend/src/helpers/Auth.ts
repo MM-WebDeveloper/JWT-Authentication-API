@@ -10,9 +10,13 @@ export const createAccessToken = (user: User) => {
 };
 
 export const createRefreshToken = (user: User) => {
-	return jwt.sign({ userId: user.id }, process.env.REFRESH_TOKEN_SECRET, {
-		expiresIn: '7d',
-	});
+	return jwt.sign(
+		{ userId: user.id, tokenVersion: user.tokenVersion },
+		process.env.REFRESH_TOKEN_SECRET,
+		{
+			expiresIn: '7d',
+		}
+	);
 };
 
 export const authValidator: MiddlewareFn<ContextType> = ({ context }, next) => {
