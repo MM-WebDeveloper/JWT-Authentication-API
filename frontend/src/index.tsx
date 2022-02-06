@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import AppRoutes from './Routes';
 import { ApolloClient, InMemoryCache } from '@apollo/client';
 import reportWebVitals from './reportWebVitals';
 import { ApolloProvider } from '@apollo/react-hooks';
@@ -12,7 +12,7 @@ const client = new ApolloClient({
 
 ReactDOM.render(
 	<ApolloProvider client={client}>
-		<App />
+		<AppRoutes />
 	</ApolloProvider>,
 	document.getElementById('root')
 );
