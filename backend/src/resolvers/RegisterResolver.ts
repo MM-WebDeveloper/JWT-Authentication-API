@@ -12,6 +12,11 @@ export class RegisterResolver {
 		const hashedPassword = await bcrypt.hash(password, 12);
 
 		try {
+			const user = await User.findOne({ email });
+
+			if (user) {
+				throw new Error('invalid email');
+			}
 			await User.insert({
 				email,
 				password: hashedPassword,
