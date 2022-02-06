@@ -21,6 +21,8 @@ export const Register: React.FC = () => {
 					},
 				});
 
+				console.log(res.data?.register);
+
 				navigate('/');
 			}}
 		>

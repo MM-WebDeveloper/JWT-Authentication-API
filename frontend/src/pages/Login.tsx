@@ -1,5 +1,7 @@
+import { responsePathAsArray } from 'graphql';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { setAccessToken } from '../accessToken';
 import { useLoginMutation } from '../generated/graphql';
 
 interface Props {}
@@ -23,6 +25,10 @@ export const Login: React.FC = () => {
 					});
 
 					console.log(res.data?.login.accessToken);
+					if (res && res.data) {
+						console.log('token set');
+						setAccessToken(res.data.login.accessToken);
+					}
 				}}
 			>
 				<div>
