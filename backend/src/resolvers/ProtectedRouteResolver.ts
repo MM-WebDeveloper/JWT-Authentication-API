@@ -3,16 +3,10 @@ import { authValidator } from '../helpers/Auth';
 import { ContextType } from '../types/ContextType';
 
 @Resolver()
-export class HelloResolver {
-	@Query(() => String)
-	hello() {
-		return 'hello';
-	}
-
+export class ProtectedRouteResolver {
 	@Query(() => String)
 	@UseMiddleware(authValidator)
-	bye(@Ctx() { payload }: ContextType) {
-		console.log(payload);
+	protectedRoute(@Ctx() { payload }: ContextType) {
 		return `your user id is: ${payload!.userId}`;
 	}
 }

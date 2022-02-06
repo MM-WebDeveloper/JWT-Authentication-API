@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { buildTypeDefsAndResolvers } from 'type-graphql';
-import { HelloResolver } from './resolvers/HelloResolver';
+import { ProtectedRouteResolver } from './resolvers/ProtectedRouteResolver';
 import { ApolloServer } from 'apollo-server-express';
 import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core';
 import { createConnection } from 'typeorm';
@@ -17,7 +17,12 @@ const run = async () => {
 	const PORT = process.env.PORT || 4000;
 
 	const { typeDefs, resolvers } = await buildTypeDefsAndResolvers({
-		resolvers: [HelloResolver, RegisterResolver, LoginResolver, UserResolver],
+		resolvers: [
+			ProtectedRouteResolver,
+			RegisterResolver,
+			LoginResolver,
+			UserResolver,
+		],
 	});
 
 	const app = express();
