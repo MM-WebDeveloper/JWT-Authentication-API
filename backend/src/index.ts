@@ -70,7 +70,13 @@ const run = async () => {
 
 	await apolloServer.start();
 
-	apolloServer.applyMiddleware({ app });
+	apolloServer.applyMiddleware({
+		app,
+		cors: {
+			credentials: true,
+			origin: 'http://localhost:3000',
+		},
+	});
 
 	app.listen(PORT, () => {
 		console.log(
