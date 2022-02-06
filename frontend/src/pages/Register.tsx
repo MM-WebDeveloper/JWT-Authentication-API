@@ -1,16 +1,27 @@
 import React, { useState } from 'react';
+import { useRegisterMutation } from '../generated/graphql';
+import { useNavigate } from 'react-router-dom';
 
-interface Props {}
-
-export const Register: React.FC<Props> = () => {
+export const Register: React.FC = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const [register] = useRegisterMutation();
+	const navigate = useNavigate();
+
 	return (
 		<form
-			onSubmit={(e) => {
+			onSubmit={async (e) => {
 				e.preventDefault();
 				console.log('form submitted');
 				console.log(email, password);
+				const res = await register({
+					variables: {
+						email,
+						password,
+					},
+				});
+
+				navigate('/');
 			}}
 		>
 			<div>
@@ -26,6 +37,7 @@ export const Register: React.FC<Props> = () => {
 				<input
 					value={password}
 					placeholder='password'
+					type='password'
 					onChange={(e) => {
 						setPassword(e.target.value);
 					}}
