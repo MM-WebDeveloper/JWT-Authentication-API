@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { ApolloProvider } from '@apollo/react-hooks';
 import { getAccessToken } from './accessToken';
 import { setContext } from '@apollo/client/link/context';
+import { App } from './App';
 
 const httpLink = createHttpLink({
 	uri: 'http://localhost:4000/graphql',
@@ -30,7 +31,7 @@ const client = new ApolloClient({
 
 ReactDOM.render(
 	<ApolloProvider client={client}>
-		<AppRoutes />
+		<App />
 	</ApolloProvider>,
 	document.getElementById('root')
 );
